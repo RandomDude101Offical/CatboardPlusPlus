@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const prefix = '/'; // Prefix for bot commands
+const prefix = '/'; 
 
 client.on('message', async message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -10,22 +10,17 @@ client.on('message', async message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'setup') {
-    // Check if the member has the administrator permission
     if (!message.member.hasPermission('ADMINISTRATOR')) {
       return message.reply('You do not have permission to use this command.');
     }
 
-    // Ask for channel setup
     message.channel.send('Where do you want to setup Catboard++?');
     
-    // Get a list of channels in the server
     const channels = message.guild.channels.cache.filter(channel => channel.type === 'text');
     const channelList = channels.map(channel => channel.name);
-    
-    // Display channel list
+
     const channelMessage = await message.channel.send(`Channels: ${channelList.join(', ')}`);
 
-    // Filter for user's response
     const filter = response => channelList.includes(response.content.trim()) && response.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 60000 }); // 60 seconds timeout
 
@@ -36,7 +31,6 @@ client.on('message', async message => {
       // Send setup confirmation message to the selected channel
       selectedChannel.send('Catboard++ (aka a posting bot for discord) has been set up successfully.');
 
-      // Confirm setup in the current channel
       channelMessage.edit('Catboard++ has been set up successfully in ' + selectedChannel);
     });
 
@@ -48,4 +42,4 @@ client.on('message', async message => {
   }
 });
 
-client.login('YOUR_DISCORD_BOT_TOKEN');
+client.login('a');
